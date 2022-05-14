@@ -1,16 +1,15 @@
 package com.wench.vacabulary
 
 import android.Manifest
-import android.content.pm.PackageManager
+import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
+import androidx.appcompat.widget.AlertDialogLayout
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.wench.vacabulary.data.VOCABULARY_LIST
@@ -135,14 +134,32 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this, "取消录音", Toast.LENGTH_SHORT).show()
                 }else{
                     RecordHelper.stopRecord()
-                    val audioPath = getAudioFilePath()
-                    adapter.dataList[currentPosition].audioPath = audioPath
-                    adapter.notifyItemChanged(currentPosition)
-                    updateAudioPath(adapter.dataList[currentPosition].id, audioPath)
-                    Toast.makeText(this, "录音完成", Toast.LENGTH_SHORT).show()
+                    dealRecord()
                 }
             }
         }
         true
+    }
+
+    private fun dealRecord(){
+        if(adapter.dataList[currentPosition].audioPath.isNullOrEmpty()){
+            updateAudio()
+        }else{
+            AlertDialog.Builder(this)
+                .setMessage("录音完成，是否替换?")
+                .setPositiveButton("替换") { _, _ ->
+                    updateAudio()
+                }
+                .setNegativeButton("取消") { _, _ -> }
+                .create().show()
+        }
+    }
+
+    private fun updateAudio(){
+        val audioPath = getAudioFilePath()
+        adapter.dataList[currentPosition].audioPath = audioPath
+        adapter.notifyItemChanged(currentPosition)
+        updateAudioPath(adapter.dataList[currentPosition].id, audioPath)
+        Toast.makeText(this, "录音完成", Toast.LENGTH_SHORT).show()
     }
 }
