@@ -1,0 +1,9 @@
+词典存储目录:
+/data/data/com.wench.vacabulary/files/mmkv
+
+录音存储路径：
+/storage/emulated/0/Android/data/com.wench.vacabulary/files
+如： file://storage/emulated/0/Android/data/com.wench.vacabulary/files/20210520_204537.m4a
+
+Alias:vocabulary
+密码 wenqi7758521
